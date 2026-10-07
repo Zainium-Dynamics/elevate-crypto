@@ -1,6 +1,6 @@
 //! # elevate-crypto
 //!
-//! **Pure Rust** cryptography for the elevate monorepo.
+//! **Pure Rust** cryptography for the elevate family.
 //! **No C OpenSSL / libcrypto** — everything is implemented in Rust.
 //!
 //! | Purpose | Algorithm |

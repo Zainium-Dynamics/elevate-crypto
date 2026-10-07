@@ -1,20 +1,15 @@
-# `elevate-crypto`
+# elevate-crypto
 
-[![License](https://img.shields.io/badge/License-MIT%20OR%20Apache--2.0-blue.svg)](../LICENSE-APACHE)
+Pure-Rust crypto for the elevate tools: password hashing, file hashing and
+signature checks. There's no OpenSSL dependency. The one exception is the
+optional `system_crypt` feature, which calls the system `crypt(3)` for old
+`/etc/shadow` hash formats that the Rust crates don't handle.
 
-Pure-Rust crypto backing password hashing and file-integrity checks
-across the workspace. No C OpenSSL/libcrypt dependency (the one
-exception is the optional `system_crypt` feature, for legacy
-`/etc/shadow` hash formats pure Rust doesn't cover).
-
-## What's in it
-
-- **Argon2id** password hashing — memory-hard, resists GPU/ASIC
-  brute-forcing. Salts via `getrandom`.
-- **Blake3** file hashing — used to detect offline tampering of
-  `/etc/passwd` / `/etc/shadow` / `/etc/group`.
-- **Ed25519** signatures — verification for user-management data
-  integrity.
+- **Argon2id** for password hashing, with salts from `getrandom`. bcrypt and
+  SHA-crypt verification are there for existing shadow files.
+- **Blake3** for hashing files, e.g. to notice changes to `/etc/passwd`,
+  `/etc/shadow` and `/etc/group`.
+- **Ed25519** for signing and verifying data.
 
 ## Usage
 
@@ -25,7 +20,20 @@ let hash = hash_password("SecretPassword123!").unwrap();
 assert!(verify_password("SecretPassword123!", &hash).unwrap_or(false));
 ```
 
+Add it as a git dependency:
+
+```toml
+elevate-crypto = { git = "https://github.com/Zainium-Dynamics/elevate-crypto", tag = "v1.0.1" }
+```
+
+Features are `hash`, `sign`, `password`, `legacy_shadow` and `system_crypt`
+(all on by default), plus `std` / `alloc`. Turn off `system_crypt` if you
+don't want to link libcrypt.
+
+Used by [elevate-pam](https://github.com/Zainium-Dynamics/elevate-privilege)
+and elevate-umbra.
+
 ## License
 
-MIT OR Apache-2.0 — see [`../LICENSE-MIT`](../LICENSE-MIT) and
-[`../LICENSE-APACHE`](../LICENSE-APACHE).
+MIT OR Apache-2.0, see [LICENSE-MIT](LICENSE-MIT) and
+[LICENSE-APACHE](LICENSE-APACHE).

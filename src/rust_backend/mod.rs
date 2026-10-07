@@ -13,7 +13,7 @@ pub mod ed25519;
 #[cfg(feature = "password")]
 pub mod password;
 
-// Keep file name for monorepo layout; SHA-crypt is password-only legacy.
+// SHA-crypt is password-only legacy.
 #[cfg(feature = "legacy_shadow")]
 pub mod sha_crypt;
 
